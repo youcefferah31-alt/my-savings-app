@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>الحصالة العالمية + المكافآت</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background-color: #f1f5f9; }
+        .gradient-bg { background: linear-gradient(135deg, #059669 0%, #10b981 100%); }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div class="max-w-lg mx-auto bg-white rounded-[2rem] shadow-2xl border border-slate-200 overflow-hidden">
+        <div class="gradient-bg p-8 text-white text-center">
+            <h1 class="text-2xl font-bold">الحصالة الذكية 💰</h1>
+            <p class="text-emerald-100 text-sm mt-1">احسب مدخراتك مع المكافآت الإضافية</p>
+        </div>
+
+        <div class="p-8 space-y-6">
+            <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2">عملة الحساب:</label>
+                <select id="currency" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 transition">
+                    <option value="د.ج">دينار جزائري (DZD)</option>
+                    <option value="ر.س">ريال سعودي (SAR)</option>
+                    <option value="ج.م">جنيه مصري (EGP)</option>
+                    <option value="$">دولار أمريكي (USD)</option>
+                    <option value="€">يورو (EUR)</option>
+                </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-1">الادخار اليومي:</label>
+                    <input id="dailyAmount" type="number" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500" placeholder="0">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-1">عدد الأيام:</label>
+                    <input id="daysCount" type="number" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500" placeholder="مثلاً 30">
+                </div>
+            </div>
+
+            <div class="bg-amber-50 p-4 rounded-2xl border border-amber-100">
+                <label class="block text-sm font-bold text-amber-800 mb-2 flex items-center gap-2">
+                    <span>🎁 مبالغ إضافية (مكافآت):</span>
+                </label>
+                <input id="bonusAmount" type="number" class="w-full p-3 bg-white border border-amber-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500" placeholder="مثلاً: عيدية، مكافأة...">
+                <p class="text-[10px] text-amber-600 mt-2">* هذا المبلغ سيتم إضافته للمجموع النهائي مباشرة.</p>
+            </div>
+
+            <button onclick="calculateTotal()" class="w-full gradient-bg hover:opacity-90 text-white font-bold py-4 rounded-xl shadow-lg transition transform active:scale-95 text-lg">
+                عرض المجموع النهائي 📊
+            </button>
+
+            <div id="resultCard" class="hidden bg-slate-900 rounded-2xl p-6 text-center text-white relative overflow-hidden">
+                <div class="relative z-10">
+                    <p class="text-slate-400 text-xs font-bold mb-1 uppercase">المجموع الكلي المجمع</p>
+                    <h2 class="text-4xl font-black text-emerald-400 mb-2">
+                        <span id="finalValue">0</span>
+                        <span id="currLabel" class="text-lg font-normal"></span>
+                    </h2>
+                    <div class="flex justify-between text-[11px] border-t border-slate-700 pt-3 mt-3 text-slate-300">
+                        <span>من الادخار: <span id="savingPart">0</span></span>
+                        <span>من المكافآت: <span id="bonusPart">0</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateTotal() {
+            const daily = parseFloat(document.getElementById('dailyAmount').value) || 0;
+            const days = parseInt(document.getElementById('daysCount').value) || 0;
+            const bonus = parseFloat(document.getElementById('bonusAmount').value) || 0;
+            const currency = document.getElementById('currency').value;
+            
+            // الحسابات
+            const totalFromDays = daily * days;
+            const grandTotal = totalFromDays + bonus;
+
+            // تحديث الواجهة
+            const resultCard = document.getElementById('resultCard');
+            resultCard.classList.remove('hidden');
+            
+            document.getElementById('finalValue').innerText = grandTotal.toLocaleString();
+            document.getElementById('currLabel').innerText = currency;
+            
+            document.getElementById('savingPart').innerText = totalFromDays.toLocaleString() + " " + currency;
+            document.getElementById('bonusPart').innerText = bonus.toLocaleString() + " " + currency;
+        }
+    </script>
+</body>
+</html>
